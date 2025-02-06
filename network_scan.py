@@ -50,7 +50,6 @@ def scan_file(file_path):
     """ Submits a file for scanning by sending its hash to VirusTotal. """
     headers = {"x-apikey": API_KEY}
 
-    # Get the file hash (MD5)
     file_hash = get_file_hash(file_path)
 
     if file_hash:
@@ -79,20 +78,35 @@ def get_file_hash(file_path):
         return None
 
 
-def scan_folder(folder_path):
-    """ Scans all files in a folder (by hashing and submitting each file). """
-    if os.path.isdir(folder_path):
-        for filename in os.listdir(folder_path):
-            file_path = os.path.join(folder_path, filename)
-            if os.path.isfile(file_path):
-                print(f"Scanning file: {file_path}")
-                scan_file(file_path)
-    else:
-        print("❌ Folder path is invalid!")
+def select_file_from_folder(folder_path):
+    """ Allows the user to select a specific file from a folder for scanning. """
+    if not os.path.isdir(folder_path):
+        print("❌ Invalid folder path!")
+        return None
+
+    files = [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))]
+
+    if not files:
+        print("❌ No files found in the folder!")
+        return None
+
+    print("\n📂 Files in folder:")
+    for idx, file in enumerate(files, start=1):
+        print(f"{idx}. {file}")
+
+    try:
+        choice = int(input("\nEnter the number of the file you want to scan: "))
+        if 1 <= choice <= len(files):
+            return os.path.join(folder_path, files[choice - 1])
+        else:
+            print("❌ Invalid choice!")
+            return None
+    except ValueError:
+        print("❌ Please enter a valid number!")
+        return None
 
 
 if __name__ == "__main__":
-    # Get URL or File/Folder input from the user
     choice = input("Do you want to scan a URL or a file/folder? (Enter 'url' or 'file/folder'): ").strip().lower()
 
     if choice == 'url':
@@ -101,13 +115,17 @@ if __name__ == "__main__":
         if analysis_id:
             get_scan_results(analysis_id)
 
-    elif choice == 'file' or choice == 'folder':
-        path = input("Enter the file or folder path: ").strip()
-        if os.path.isfile(path):
-            scan_file(path)  # Scan a single file
-        elif os.path.isdir(path):
-            scan_folder(path)  # Scan all files in the folder
+    elif choice == 'file':
+        file_path = input("Enter the full file path to scan: ").strip()
+        if os.path.isfile(file_path):
+            scan_file(file_path)
         else:
-            print("❌ Invalid path! Please check and try again.")
+            print("❌ Invalid file path!")
+
+    elif choice == 'folder':
+        folder_path = input("Enter the folder path: ").strip()
+        file_path = select_file_from_folder(folder_path)
+        if file_path:
+            scan_file(file_path)
     else:
         print("❌ Invalid choice! Please enter 'url' or 'file/folder'.")
