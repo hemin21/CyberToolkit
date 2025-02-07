@@ -1,4 +1,4 @@
-#!/bin/bash
+
 TMP_DIR="/tmp/tmpinstalldir"
 function cleanup {
 	echo rm -rf $TMP_DIR > /dev/null
