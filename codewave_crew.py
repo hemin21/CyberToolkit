@@ -17,15 +17,21 @@ def install_cupp():
     print("\nInstallation complete!")
 
 def run_cupp():
-    os.system("python3 cupp/cupp.py")
+    if os.path.exists("cupp/cupp.py"):
+        os.system("python3 cupp/cupp.py")
+    else:
+        print("\nCupp is not installed! Please install it first.")
 
 def install_cybersniffer():
     print("\nInstalling CyberSniffer dependencies...\n")
-    os.system("pip install scapy pyshark psutil")
+    os.system("pip install scapy pyshark psutil tkinter")
     print("\nInstallation complete!")
 
 def run_cybersniffer():
-    os.system("python3 CyberSniffer.py")
+    if os.path.exists("CyberSniffer.py"):
+        os.system("python3 CyberSniffer.py")
+    else:
+        print("\nCyberSniffer is not installed! Please install it first.")
 
 def install_filetransfer():
     print("\nInstalling FileTransfer tool...\n")
@@ -33,7 +39,10 @@ def install_filetransfer():
     print("\nInstallation complete!")
 
 def run_filetransfer():
-    os.system("bash FileTransfer.sh")
+    if os.path.exists("FileTransfer.sh"):
+        os.system("bash FileTransfer.sh")
+    else:
+        print("\nFileTransfer script not found!")
 
 def install_ddos():
     print("\nInstalling dependencies for DDoS tool...\n")
@@ -41,7 +50,10 @@ def install_ddos():
     print("\nInstallation complete!")
 
 def run_ddos():
-    os.system("python3 DDos.py")
+    if os.path.exists("DDos.py"):
+        os.system("python3 DDos.py")
+    else:
+        print("\nDDoS script not found!")
 
 def install_rdp():
     print("\nInstalling xfreerdp...\n")
@@ -53,7 +65,10 @@ def run_rdp():
     username = input("Enter Username: ").strip()
     password = input("Enter Password: ").strip()
     command = ["xfreerdp", f"/u:{username}", f"/p:{password}", f"/v:{ip}", "/dynamic-resolution"]
-    subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    try:
+        subprocess.run(command, check=True)
+    except FileNotFoundError:
+        print("Error: xfreerdp is not installed. Please install it first.")
 
 def install_urlinspector():
     print("\nInstalling URL Inspector dependencies...\n")
@@ -61,7 +76,10 @@ def install_urlinspector():
     print("\nInstallation complete!")
 
 def run_urlinspector():
-    os.system("python3 URLInspector.py")
+    if os.path.exists("URLInspector.py"):
+        os.system("python3 URLInspector.py")
+    else:
+        print("\nURLInspector script not found!")
 
 def install_phishingtool():
     print("\nInstalling Phishing Tool dependencies...\n")
@@ -69,7 +87,10 @@ def install_phishingtool():
     print("\nInstallation complete!")
 
 def run_phishingtool():
-    os.system("python3 PhishingTool.py")
+    if os.path.exists("PhishingTool.py"):
+        os.system("python3 PhishingTool.py")
+    else:
+        print("\nPhishingTool script not found!")
 
 def install_securefilesharer():
     print("\nInstalling Secure File Sharer dependencies...\n")
@@ -77,7 +98,10 @@ def install_securefilesharer():
     print("\nInstallation complete!")
 
 def run_securefilesharer():
-    os.system("python3 SecureFileSharer.py")
+    if os.path.exists("SecureFileSharer.py"):
+        os.system("python3 SecureFileSharer.py")
+    else:
+        print("\nSecureFileSharer script not found!")
 
 # ======== SUB-MENU FUNCTION ========
 
