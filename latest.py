@@ -82,7 +82,7 @@ while True:
                 elif option == "2":
                     run_tool(selected_tool)
                 elif option == "3":
-                    break
+                    break  # Go back to the main menu
                 else:
                     print("\n[!] Invalid option. Try again.")
         elif choice == 10:
