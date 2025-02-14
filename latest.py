@@ -1,27 +1,25 @@
 import os
+import subprocess
 
 # Function to install tools
 def install_tool(tool_name):
     print(f"\n[+] Installing {tool_name}...\n")
-    
-    if tool_name == "Cupp":
-        os.system("sudo apt install cupp -y")
-    elif tool_name == "CyberSniffer":
-        os.system("sudo apt install nmap -y")
-    elif tool_name == "DDoS":
-        os.system("git clone https://github.com/cyweb/hammer.git && cd hammer && chmod +x hammer.py")
-    elif tool_name == "FileTransfer":
-        os.system("sudo apt install openssh-client -y")
-    elif tool_name == "RDP":
-        os.system("sudo apt install xfreerdp -y")
-    elif tool_name == "Secure File Sharer":
-        os.system("sudo apt install python3 -y")
-    elif tool_name == "URL Inspector":
-        os.system("sudo apt install curl -y")
-    elif tool_name == "Password Strength Checker":
-        os.system("sudo apt install libpam-pwquality -y")
-    elif tool_name == "Phishing Detector":
-        os.system("git clone https://github.com/htr-tech/zphisher.git && cd zphisher && chmod +x zphisher.sh")
+
+    commands = {
+        "Cupp": "sudo apt update --fix-missing && sudo apt install cupp -y || git clone https://github.com/Mebus/cupp.git",
+        "CyberSniffer": "sudo apt install nmap -y",
+        "DDoS": "git clone https://github.com/cyweb/hammer.git && cd hammer && chmod +x hammer.py",
+        "FileTransfer": "sudo apt install openssh-client -y",
+        "RDP": "sudo apt install xfreerdp -y",
+        "Secure File Sharer": "sudo apt install python3 -y",
+        "URL Inspector": "sudo apt install curl -y",
+        "Password Strength Checker": "sudo apt install libpam-pwquality -y",
+        "Phishing Detector": "git clone https://github.com/htr-tech/zphisher.git && cd zphisher && chmod +x zphisher.sh"
+    }
+
+    command = commands.get(tool_name)
+    if command:
+        os.system(command)
     else:
         print("\n[!] Installation command not available for this tool.")
 
@@ -29,24 +27,21 @@ def install_tool(tool_name):
 def run_tool(tool_name):
     print(f"\n[+] Running {tool_name}...\n")
 
-    if tool_name == "Cupp":
-        os.system("python3 cupp.py")
-    elif tool_name == "CyberSniffer":
-        os.system("nmap -h")
-    elif tool_name == "DDoS":
-        os.system("cd hammer && python3 hammer.py")
-    elif tool_name == "FileTransfer":
-        os.system("scp -h")
-    elif tool_name == "RDP":
-        os.system("xfreerdp /h")
-    elif tool_name == "Secure File Sharer":
-        os.system("python3 secure_fileshare.py")
-    elif tool_name == "URL Inspector":
-        os.system("curl --help")
-    elif tool_name == "Password Strength Checker":
-        os.system("pwscore")
-    elif tool_name == "Phishing Detector":
-        os.system("cd zphisher && bash zphisher.sh")
+    commands = {
+        "Cupp": "python3 ~/cupp/cupp.py || cupp -h",
+        "CyberSniffer": "nmap -h",
+        "DDoS": "python3 ~/hammer/hammer.py",
+        "FileTransfer": "scp --help",
+        "RDP": "xfreerdp --help",
+        "Secure File Sharer": "python3 secure_fileshare.py",
+        "URL Inspector": "curl --help",
+        "Password Strength Checker": "pwscore",
+        "Phishing Detector": "bash ~/zphisher/zphisher.sh"
+    }
+
+    command = commands.get(tool_name)
+    if command:
+        subprocess.run(command, shell=True)
     else:
         print("\n[!] Run command not available for this tool.")
 
@@ -82,7 +77,7 @@ while True:
                 elif option == "2":
                     run_tool(selected_tool)
                 elif option == "3":
-                    break  # Go back to the main menu
+                    break
                 else:
                     print("\n[!] Invalid option. Try again.")
         elif choice == 10:
