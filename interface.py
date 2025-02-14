@@ -1,12 +1,11 @@
 import os
+import subprocess
 import pyfiglet
 
 def display_banner():
-    os.system("clear" if os.name == "posix" else "cls")  # Clears screen
-
+    os.system("clear" if os.name == "posix" else "cls")
     banner_text = pyfiglet.figlet_format("CodeWave Crew", font="slant")
     print(f"\033[92m{banner_text}\033[0m")
-
     print("[X] Toolkit - Ethical Hacking Suite [X]\n")
     print("⚠ Please use responsibly for security research & educational purposes only.\n")
 
@@ -18,54 +17,69 @@ def install_cupp():
     print("\nInstallation complete!")
 
 def run_cupp():
-    if os.path.exists("cupp/cupp.py"):
-        os.system("python3 cupp/cupp.py")
-    else:
-        print("\nCupp is not installed! Please install it first.")
+    os.system("python3 cupp/cupp.py")
 
-def install_nmap():
-    print("\nInstalling Nmap...\n")
-    os.system("sudo apt install nmap -y")
+def install_cybersniffer():
+    print("\nInstalling CyberSniffer dependencies...\n")
+    os.system("pip install scapy pyshark psutil")
     print("\nInstallation complete!")
 
-def run_nmap():
-    os.system("nmap -h")
+def run_cybersniffer():
+    os.system("python3 CyberSniffer.py")
 
-def install_rdesktop():
-    print("\nInstalling rdesktop...\n")
-    os.system("sudo apt install rdesktop -y")
+def install_filetransfer():
+    print("\nInstalling FileTransfer tool...\n")
+    os.system("sudo apt install curl wget tar unzip -y")
     print("\nInstallation complete!")
 
-def run_rdesktop():
-    ip = input("Enter target IP: ")
-    os.system(f"rdesktop {ip}")
+def run_filetransfer():
+    os.system("bash FileTransfer.sh")
 
-def install_sqlmap():
-    print("\nInstalling Sqlmap...\n")
-    os.system("git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git sqlmap-dev")
+def install_ddos():
+    print("\nInstalling dependencies for DDoS tool...\n")
+    os.system("sudo apt install python3 -y")
     print("\nInstallation complete!")
 
-def run_sqlmap():
-    os.system("python3 sqlmap-dev/sqlmap.py -h")
+def run_ddos():
+    os.system("python3 DDos.py")
 
-def install_aircrack():
-    print("\nInstalling Aircrack-ng...\n")
-    os.system("sudo apt install aircrack-ng -y")
+def install_rdp():
+    print("\nInstalling xfreerdp...\n")
+    os.system("sudo apt install freerdp2-x11 -y")
     print("\nInstallation complete!")
 
-def run_aircrack():
-    os.system("airmon-ng")
+def run_rdp():
+    ip = input("Enter IP Address: ").strip()
+    username = input("Enter Username: ").strip()
+    password = input("Enter Password: ").strip()
+    command = ["xfreerdp", f"/u:{username}", f"/p:{password}", f"/v:{ip}", "/dynamic-resolution"]
+    subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-def install_openvpn():
-    print("\nInstalling OpenVPN...\n")
-    os.system("sudo apt install openvpn -y")
+def install_urlinspector():
+    print("\nInstalling URL Inspector dependencies...\n")
+    os.system("pip install requests")
     print("\nInstallation complete!")
 
-def run_openvpn():
-    config = input("Enter OpenVPN config file path: ")
-    os.system(f"sudo openvpn {config}")
+def run_urlinspector():
+    os.system("python3 URLInspector.py")
 
-# ======== SUB-MENUS FOR TOOLS ========
+def install_phishingtool():
+    print("\nInstalling Phishing Tool dependencies...\n")
+    os.system("pip install requests")
+    print("\nInstallation complete!")
+
+def run_phishingtool():
+    os.system("python3 PhishingTool.py")
+
+def install_securefilesharer():
+    print("\nInstalling Secure File Sharer dependencies...\n")
+    os.system("pip install requests")
+    print("\nInstallation complete!")
+
+def run_securefilesharer():
+    os.system("python3 SecureFileSharer.py")
+
+# ======== SUB-MENU FUNCTION ========
 
 def tool_menu(tool_name, install_function, run_function):
     """Generic function for handling tool sub-menus."""
@@ -89,11 +103,13 @@ def tool_menu(tool_name, install_function, run_function):
 def main_menu():
     tools = [
         ("Cupp (Wordlist Maker)", install_cupp, run_cupp),
-        ("Nmap (Network Scanner)", install_nmap, run_nmap),
-        ("RDP (Remote Desktop Protocol)", install_rdesktop, run_rdesktop),
-        ("Sqlmap (SQL Injection)", install_sqlmap, run_sqlmap),
-        ("Aircrack-ng (WiFi Hacking)", install_aircrack, run_aircrack),
-        ("OpenVPN (VPN Connection)", install_openvpn, run_openvpn),
+        ("CyberSniffer (Network Scanning)", install_cybersniffer, run_cybersniffer),
+        ("FileTransfer", install_filetransfer, run_filetransfer),
+        ("DDoS Attack Tool", install_ddos, run_ddos),
+        ("RDP (Remote Desktop Protocol)", install_rdp, run_rdp),
+        ("URL Inspector", install_urlinspector, run_urlinspector),
+        ("Phishing Tool", install_phishingtool, run_phishingtool),
+        ("Secure File Sharer", install_securefilesharer, run_securefilesharer),
         ("Exit", None, None)
     ]
 
