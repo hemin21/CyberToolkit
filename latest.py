@@ -1,89 +1,125 @@
 import os
 import subprocess
+import pyfiglet
 
-# Function to install tools
-def install_tool(tool_name):
-    print(f"\n[+] Installing {tool_name}...\n")
+def display_banner():
+    os.system("clear" if os.name == "posix" else "cls")
+    banner_text = pyfiglet.figlet_format("CodeWave Crew", font="slant")
+    print(f"\033[92m{banner_text}\033[0m")
+    print("[X] Toolkit - Ethical Hacking Suite [X]\n")
+    print("⚠ Please use responsibly for security research & educational purposes only.\n")
 
-    commands = {
-        "Cupp": "sudo apt update --fix-missing && sudo apt install cupp -y || git clone https://github.com/Mebus/cupp.git",
-        "CyberSniffer": "sudo apt install nmap -y",
-        "DDoS": "git clone https://github.com/cyweb/hammer.git && cd hammer && chmod +x hammer.py",
-        "FileTransfer": "sudo apt install openssh-client -y",
-        "RDP": "sudo apt install xfreerdp -y",
-        "Secure File Sharer": "sudo apt install python3 -y",
-        "URL Inspector": "sudo apt install curl -y",
-        "Password Strength Checker": "sudo apt install libpam-pwquality -y",
-        "Phishing Detector": "git clone https://github.com/htr-tech/zphisher.git && cd zphisher && chmod +x zphisher.sh"
-    }
+# ======== TOOL FUNCTIONS ========
 
-    command = commands.get(tool_name)
-    if command:
-        os.system(command)
-    else:
-        print("\n[!] Installation command not available for this tool.")
+def install_cybersniffer():
+    print("\nInstalling CyberSniffer dependencies...\n")
+    os.system("pip install scapy pyshark psutil")
+    print("\nInstallation complete!")
 
-# Function to run tools
-def run_tool(tool_name):
-    print(f"\n[+] Running {tool_name}...\n")
+def run_cybersniffer():
+    os.system("python3 CyberSniffer.py")
 
-    commands = {
-        "Cupp": "python3 ~/cupp/cupp.py || cupp -h",
-        "CyberSniffer": "nmap -h",
-        "DDoS": "python3 ~/hammer/hammer.py",
-        "FileTransfer": "scp --help",
-        "RDP": "xfreerdp --help",
-        "Secure File Sharer": "python3 secure_fileshare.py",
-        "URL Inspector": "curl --help",
-        "Password Strength Checker": "pwscore",
-        "Phishing Detector": "bash ~/zphisher/zphisher.sh"
-    }
+def install_filetransfer():
+    print("\nInstalling FileTransfer tool...\n")
+    os.system("sudo apt install curl wget tar unzip -y")
+    print("\nInstallation complete!")
 
-    command = commands.get(tool_name)
-    if command:
-        subprocess.run(command, shell=True)
-    else:
-        print("\n[!] Run command not available for this tool.")
+def run_filetransfer():
+    os.system("bash FileTransfer.sh")
 
-# Main menu
-tools = [
-    "Cupp", "CyberSniffer", "DDoS", "FileTransfer", "RDP",
-    "Secure File Sharer", "URL Inspector", "Password Strength Checker", "Phishing Detector"
-]
+def install_ddos():
+    print("\nInstalling dependencies for DDoS tool...\n")
+    os.system("sudo apt install python3 -y")
+    print("\nInstallation complete!")
 
-while True:
-    print("\n[Cybersecurity Toolkit]")
-    for i, tool in enumerate(tools, start=1):
-        print(f"[{i}] {tool}")
-    print("[10] Exit")
+def run_ddos():
+    os.system("python3 DDos.py")
 
-    choice = input("\nChoose a tool: ")
+def install_rdp():
+    print("\nInstalling xfreerdp...\n")
+    os.system("sudo apt install freerdp2-x11 -y")
+    print("\nInstallation complete!")
 
-    if choice.isdigit():
-        choice = int(choice)
-        if 1 <= choice <= len(tools):
-            selected_tool = tools[choice - 1]
+def run_rdp():
+    ip = input("Enter IP Address: ").strip()
+    username = input("Enter Username: ").strip()
+    password = input("Enter Password: ").strip()
+    command = ["xfreerdp", f"/u:{username}", f"/p:{password}", f"/v:{ip}", "/dynamic-resolution"]
+    subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-            while True:
-                print(f"\n[{selected_tool}]")
-                print("[1] Install")
-                print("[2] Run")
-                print("[3] Back to Main Menu")
+def install_urlinspector():
+    print("\nInstalling URL Inspector dependencies...\n")
+    os.system("pip install requests")
+    print("\nInstallation complete!")
 
-                option = input("\nChoose an option: ")
+def run_urlinspector():
+    os.system("python3 URLInspector.py")
 
-                if option == "1":
-                    install_tool(selected_tool)
-                elif option == "2":
-                    run_tool(selected_tool)
-                elif option == "3":
-                    break
-                else:
-                    print("\n[!] Invalid option. Try again.")
-        elif choice == 10:
-            print("\n[+] Exiting...\n")
-            break
-        else:
-            print("\n[!] Invalid option. Try again.")
-    else:
-        print("\n[!] Invalid input. Enter a number.")
+def install_phishingtool():
+    print("\nInstalling Phishing Tool dependencies...\n")
+    os.system("pip install requests")
+    print("\nInstallation complete!")
+
+def run_phishingtool():
+    os.system("python3 PhishingTool.py")
+
+def install_securefilesharer():
+    print("\nInstalling Secure File Sharer dependencies...\n")
+    os.system("pip install requests")
+    print("\nInstallation complete!")
+
+def run_securefilesharer():
+    os.system("python3 SecureFileSharer.py")
+
+# ======== SUB-MENU FUNCTION ========
+
+def tool_menu(tool_name, install_function, run_function):
+    """Generic function for handling tool sub-menus."""
+    while True:
+        print(f"\n[{tool_name}]\n[1] Install {tool_name}\n[2] Run {tool_name}\n[3] Back to Main Menu")
+        try:
+            choice = int(input("\nChoose an option: "))
+            if choice == 1:
+                install_function()
+            elif choice == 2:
+                run_function()
+            elif choice == 3:
+                break
+            else:
+                print("Invalid choice!")
+        except ValueError:
+            print("Invalid input! Please enter a number.")
+
+# ======== MAIN MENU ========
+
+def main_menu():
+    tools = [
+        ("CyberSniffer (Network Scanning)", install_cybersniffer, run_cybersniffer),
+        ("FileTransfer", install_filetransfer, run_filetransfer),
+        ("DDoS Attack Tool", install_ddos, run_ddos),
+        ("RDP (Remote Desktop Protocol)", install_rdp, run_rdp),
+        ("URL Inspector", install_urlinspector, run_urlinspector),
+        ("Phishing Tool", install_phishingtool, run_phishingtool),
+        ("Secure File Sharer", install_securefilesharer, run_securefilesharer),
+        ("Exit", None, None)
+    ]
+
+    while True:
+        display_banner()
+        for i, (tool, _, _) in enumerate(tools, start=1):
+            print(f"[{i}] {tool}")
+
+        try:
+            choice = int(input("\nChoose a tool to proceed: "))
+            if 1 <= choice < len(tools):
+                tool_menu(tools[choice - 1][0], tools[choice - 1][1], tools[choice - 1][2])
+            elif choice == len(tools):  # Exit option
+                print("Exiting Toolkit...")
+                break
+            else:
+                print("Invalid choice!")
+        except ValueError:
+            print("Invalid input! Please enter a number.")
+
+if __name__ == "__main__":
+    main_menu()
